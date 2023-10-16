@@ -1,0 +1,50 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(href='/styles.css' rel='stylesheet')
+    script(src="https://unpkg.com/htmx.org")
+
+
+  body
+    include components/header 
+    div(class="flex h-screen bg-gray-100") 
+      // Toggle Button
+      // Sidebar
+      div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-full px-4 py-6 shadow-lg")
+        div 
+          ul(class="space-y-4", hx-target="#chatbox")
+            li(class="p-3 rounded-md cursor-pointer", hx-get="/selected_chat/1", hx-trigger="click", onclick="selectChat(event)") Chat 1
+            li(class="p-3 rounded-md cursor-pointer", hx-get="/selected_chat/2", hx-trigger="click", onclick="selectChat(event)") Chat 2
+            li(class="p-3 rounded-md cursor-pointer", hx-get="/selected_chat/3", hx-trigger="click", onclick="selectChat(event)") Chat 3
+            li(class="p-3 rounded-md cursor-pointer", hx-get="/selected_chat/4", hx-trigger="click", onclick="selectChat(event)") Chat 4
+            li(class="p-3 rounded-md cursor-pointer", hx-get="/selected_chat/5", hx-trigger="click", onclick="selectChat(event)") Chat 5
+        div
+          button(class="bg-blue-600 text-white px-4 py-2 rounded-md") New Chat
+          
+      div(id="chatbox" class="flex-1 bg-gray-200 overflow-y-auto")
+
+  script.
+    function selectChat(event) {
+      // Get all li elements
+      const items = document.querySelectorAll('ul li');
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("block");
+      // Remove the bg-blue-600 class from all li elements
+      items.forEach(item => {
+        item.classList.remove('bg-blue-600', 'text-white');
+      });
+      // Add the bg-blue-600 and text-white class to the clicked li element
+      event.currentTarget.classList.add('bg-blue-600', 'text-white');
+    }
+
+    function toggleSidebar() {
+      const toggleButton = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("hidden");
+      sidebar.classList.toggle("block");
+
+      toggleButton.classList.toggle("hidden sm:flex-col")
+    }

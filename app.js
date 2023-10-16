@@ -10,8 +10,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('assets'));
 app.use(compression());
 
-app.get('/', (req, res) => {
-  res.render('index');
+app.get('/chats', (req, res) => {
+  res.render('chats');
 });
 
 app.get('/selected_chat/:id', (req, res) => {

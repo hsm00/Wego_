@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   purge: ['./views/**/*.pug'],
   darkMode: false, // or 'media' or 'class'
@@ -8,5 +9,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  separator: '_',
 };
