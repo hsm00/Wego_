@@ -7,4 +7,10 @@ html(lang="en")
     script(src="https://unpkg.com/htmx.org")
 
 body
-    div(class="bg-blue-600 box-border h-32 w-8 p-4 border-4") s
+    div(class="flex justify-center items-center h-screen") 
+      div(class="flex-col mx-auto bg-blue-100 w-64 text-center p-4 border-solid border-2 border-blue-300") 
+        h1 Login
+        form(class="p-4" hx-post="login")
+          input(class="p-2" placeholder="username" name="username")
+          input(class="mt-2 p-2" placeholder="password" name="password")
+          button(class="m-4 p-2 w-32 border-solid border-2 border-blue-300" type="submit") Submit

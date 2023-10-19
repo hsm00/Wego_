@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-import { login } from '../controllers/userController';
+import { loginPage } from '../controllers/userController';
 
-router.get("/login", login)
+router.get("/login", loginPage)
+
+router.post("/login")
 
 
 
