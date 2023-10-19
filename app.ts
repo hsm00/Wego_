@@ -11,26 +11,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('assets'));
 app.use(compression());
 
-mongoose.connect('mongodb+srv://root:root@wego.vxx1gme.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true})
+mongoose.connect('mongodb+srv://root:root@wego.vxx1gme.mongodb.net/WeGo?retryWrites=true&w=majority', { useNewUrlParser: true})
 
 const db = mongoose.connection
 db.on('error', (error: void) => console.log('error'))
 db.once('open', () => console.log('connected to Database'))
 
 const routes = require('./routes/userRouter');
+// how to add all routes
+
 
 app.use(routes);
 
-app.get('/chats', (req: any, res: any) => {
-  res.render('chats');
-});
 
-app.get('/selected_chat/:id', (req: any, res: any) => {
-  const template = pug.compileFile('views/selected_chat.pug')
-  const markup = template({  })
-  res.send(markup);
-  console.log("s")
-});
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

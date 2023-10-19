@@ -12,8 +12,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
 
-export const login = (req: any, res: any) => {
-    const template = pug.compileFile('views/login.pug')
+
+export const chats = (req: any, res: any) => {
+    const template = pug.compileFile('views/chats.pug')
+    const markup = template({  })
+    res.send(markup);
+}
+
+
+
+export const selectedChat = (req: any, res: any) => {
+    const template = pug.compileFile('views/selected_chat.pug')
     const markup = template({  })
     res.send(markup);
 }
