@@ -10,7 +10,7 @@ body(class="bg-gray-100 h-screen flex justify-center items-center")
 
     .login-container.bg-white.p-8.rounded-lg.shadow-md.w-96
       h1.text-2xl.font-semibold.mb-4 Login
-      form(hx-post="/login")
+      form(hx-post="/login" )
         .form-group.mb-4
           label(for="username" class="block text-sm font-medium text-gray-600 mb-2") Username
           input#username(type="text" name="username" class="mt-1 p-2 w-full border rounded-md" required)

@@ -1,13 +1,11 @@
 
 const pug = require('pug');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 
 const express = require('express');
 
 const User = require('../models/User.js')
 
-const router = express.Router();
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,19 +13,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'pug');
 
 
-const user = User.findOne ("tokens")
+// const user = User.findOne ("tokens")
 
 export const chats = (req: any, res: any) => {
-    if (User.username) {
-        const template = pug.compileFile('views/chats.pug')
-        const markup = template({  })
-        res.send(markup);
+    console.log(req.tokenValid)
+    console.log(req.user)
+    if (!req.tokenValid) {
+        // Redirect to the login page if the token is not valid
+        return res.redirect('/login');
     }
-    else {
-        const template = pug.compileFile('views/login.pug')
-        const markup = template({  })
-        res.send(markup);
-    }
+    const template = pug.compileFile('views/chats.pug')
+    const markup = template({  })
+    res.send(markup);
 }
 
 

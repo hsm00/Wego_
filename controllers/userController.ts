@@ -35,14 +35,15 @@ export const login = async  (req: any, res: any) => {
 
         const token = jwt.sign(
             {
-                data: 'foobar'
+                userId: user._id,
+                username: user.username,
             }, 
             'secret',
             { 
                 expiresIn: '1h' 
             });
 
-        user.tokens.push(token);
+        user.token = token;
         await user.save();
         
         res.cookie('authToken', token, {
@@ -50,8 +51,10 @@ export const login = async  (req: any, res: any) => {
             maxAge: 3600000,
             // secure: true,
         });
-
+  
+        res.set('hx-redirect', '/chats'); // Set the hx-redirect header
         res.status(200).json({ message: "Login successful" });
+
 
     } catch (error) {
         res.status(500).json({ message: "Failed to login", error });
