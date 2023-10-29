@@ -28,18 +28,30 @@ export const login = async  (req: any, res: any) => {
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
-        if(isPasswordValid) {
-            const token = jwt.sign()
-        }
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
+        const token = jwt.sign(
+            {
+                data: 'foobar'
+            }, 
+            'secret',
+            { 
+                expiresIn: '1h' 
+            });
 
+        user.tokens.push(token);
+        await user.save();
+        
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            maxAge: 3600000,
+            // secure: true,
+        });
 
         res.status(200).json({ message: "Login successful" });
-
 
     } catch (error) {
         res.status(500).json({ message: "Failed to login", error });
