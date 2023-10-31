@@ -7,12 +7,12 @@ html(lang="en")
     script(src="https://unpkg.com/htmx.org")
 
 
-  body(class="overflow-hidden")
+  body(class="sm:h-[calc(103vh-74px)] h-full sm:overflow-hidden")
       include components/header 
-      div(class="flex h-screen bg-gray-100 overflow-hidden ") 
+      div(class="flex h-full bg-gray-100") 
         // Toggle Button
         // Sidebar
-        div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-full px-4 py-6 shadow-lg")
+        div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-screen px-4 py-6 shadow-lg")
           div 
             ul(class="space-y-4", hx-target="#chatbox")
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/1", hx-trigger="click", onclick="selectChat(event)") Chat 1
