@@ -5,6 +5,7 @@ const pug = require('pug');
 const app = express();
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser')
+const WebSocket = require('ws')
 
 app.set('view engine', 'pug');
 app.use(bodyParser.json());
@@ -26,6 +27,27 @@ const chatRoutes = require('./routes/chatsRouter');
 
 app.use('/chats', chatRoutes);
 app.use(userRoutes);
+
+
+
+
+const wss = new WebSocket.Server({ port: 8081 })
+
+
+wss.on('connection', function connection(ws: any ) {
+  console.log('Client connected')
+  ws.send('hello world')
+  
+  ws.on("close", () => {
+      console.log("Client disconnected");
+  });
+  ws.onerror = function () {
+      console.log("Some Error occurred");
+  },
+  ws.on("message", function sendMessage(data: any) {
+    console.log("first")
+  })
+});
 
 
 const PORT = process.env.PORT || 3000;

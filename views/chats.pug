@@ -7,9 +7,9 @@ html(lang="en")
     script(src="https://unpkg.com/htmx.org")
 
 
-  body(class="sm:h-[calc(103vh-74px)] h-full sm:overflow-hidden")
+  body(class="")
       include components/header 
-      div(class="flex h-full bg-gray-100") 
+      div(class="sm:h-[calc(103vh-74px)] sm:overflow-hidden flex h-full bg-gray-100") 
         // Toggle Button
         // Sidebar
         div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-screen px-4 py-6 shadow-lg")
@@ -23,7 +23,7 @@ html(lang="en")
           div
             button(class="bg-blue-600 text-white px-4 py-2 rounded-md") New Chat
             
-        div(id="chatbox" class="flex-1 bg-gray-200 w-full flex flex-col")
+        div(id="chatbox" class="flex-1 bg-gray-200 w-full flex flex-col" hx-ws="connect:ws://localhost:8081")
 
 
 
