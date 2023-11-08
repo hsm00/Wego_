@@ -31,23 +31,6 @@ app.use(userRoutes);
 
 
 
-const wss = new WebSocket.Server({ port: 8081 })
-
-
-wss.on('connection', function connection(ws: any ) {
-  console.log('Client connected')
-  ws.send('hello world')
-  
-  ws.on("close", () => {
-      console.log("Client disconnected");
-  });
-  ws.onerror = function () {
-      console.log("Some Error occurred");
-  },
-  ws.on("message", function sendMessage(data: any) {
-    console.log("first")
-  })
-});
 
 
 const PORT = process.env.PORT || 3000;

@@ -6,9 +6,16 @@ const express = require('express');
 const User = require('../models/User.js')
 const app = express();
 const jwt = require('jsonwebtoken');
+const WebSocket = require('ws')
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
+
+
+
+
+
 
 export const loginPage = (req: any, res: any) => {
     const template = pug.compileFile('views/login.pug')
@@ -18,7 +25,7 @@ export const loginPage = (req: any, res: any) => {
 
 export const login = async  (req: any, res: any) => {
     const  { username, password } = req.body
-    
+
     try {
         const user = await User.findOne({ username })
 
@@ -37,21 +44,23 @@ export const login = async  (req: any, res: any) => {
             {
                 userId: user._id,
                 username: user.username,
-            }, 
+            },
             'secret',
-            { 
-                expiresIn: '1h' 
+            {
+                expiresIn: '1h'
             });
 
         user.token = token;
         await user.save();
-        
+
         res.cookie('authToken', token, {
             httpOnly: true,
             maxAge: 3600000,
             // secure: true,
         });
-  
+
+
+
         res.set('hx-redirect', '/chats'); // Set the hx-redirect header
         res.status(200).json({ message: "Login successful" });
 
