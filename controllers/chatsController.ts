@@ -34,7 +34,7 @@ export const chats = (req: any, res: any) => {
         // Redirect to the login page if the token is not valid
         return res.redirect('/login');
     }
-    
+
     const template = pug.compileFile('views/chats.pug')
     const markup = template({  })
     res.send(markup);
@@ -56,7 +56,7 @@ export const newChat = async (req: any, res: any) => {
     }
     try { 
     const username = req.user.username;
-    const receiver = req.body.receiver;
+    const receiver = await User.findOne({ username: req.body.receiver })
     const user = await User.findOne({ username: username })
     
     if (!user) {
@@ -65,10 +65,9 @@ export const newChat = async (req: any, res: any) => {
     }
     const chat = new Chat({
         participants: [user, receiver],
-        chatName: receiver
+        chatName: receiver.username
     })
-
-    
+    await chat.save();
     const template = pug.compileFile('views/elements/newChat.pug')
     const markup = template({ receiver })
     res.send(markup);
