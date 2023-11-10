@@ -14,14 +14,16 @@ html(lang="en")
         // Sidebar
         div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-screen px-4 py-6 shadow-lg")
           div 
-            ul(class="space-y-4", hx-target="#chatbox")
+            ul(id="chatList" class="space-y-4", hx-target="#chatbox")
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/1", hx-trigger="click", onclick="selectChat(event)") Chat 1
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/2", hx-trigger="click", onclick="selectChat(event)") Chat 2
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/3", hx-trigger="click", onclick="selectChat(event)") Chat 3
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/4", hx-trigger="click", onclick="selectChat(event)") Chat 4
               li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/5", hx-trigger="click", onclick="selectChat(event)") Chat 5
           div
-            button(class="bg-blue-600 text-white px-4 py-2 rounded-md") New Chat
+            form(hx-post="/chats/newChat" hx-target="#chatList" hx-swap="afterbegin")
+              input(class="px-4 py-2 rounded-md" name="receiver" placeholder="username")
+              button(type="submit" class="newChat bg-blue-600 text-white px-4 py-2 rounded-md") New Chat
             
         div(id="chatbox" class="flex-1 bg-gray-200 w-full flex flex-col" hx-ws="connect:ws://localhost:8081")
 
