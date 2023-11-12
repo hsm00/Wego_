@@ -15,11 +15,9 @@ html(lang="en")
         div(id="sidebar" class="bg-gray-100 w-full sm:w-64 sm:block sm:flex-col justify-between h-screen px-4 py-6 shadow-lg")
           div 
             ul(id="chatList" class="space-y-4", hx-target="#chatbox")
-              li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/1", hx-trigger="click", onclick="selectChat(event)") Chat 1
-              li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/2", hx-trigger="click", onclick="selectChat(event)") Chat 2
-              li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/3", hx-trigger="click", onclick="selectChat(event)") Chat 3
-              li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/4", hx-trigger="click", onclick="selectChat(event)") Chat 4
-              li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/5", hx-trigger="click", onclick="selectChat(event)") Chat 5
+              each chat in chats
+                li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/" + chat._id, hx-trigger="click", onclick="selectChat(event)") Chat #{chat.chatName}
+              
           div
             form(hx-post="/chats/newChat" hx-target="#chatList" hx-swap="afterbegin")
               input(class="px-4 py-2 rounded-md" name="receiver" placeholder="username")

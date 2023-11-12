@@ -29,14 +29,28 @@ wss.on('connection', function connection(ws: any ) {
 });
 // const user = User.findOne ("tokens")
 
-export const chats = (req: any, res: any) => {
+
+
+export const chats = async (req: any, res: any) => {
     if (!req.tokenValid) {
         // Redirect to the login page if the token is not valid
         return res.redirect('/login');
     }
-
-    const template = pug.compileFile('views/chats.pug')
-    const markup = template({  })
+    const user = req.user
+    const chats = await Chat.find({participants: user.userId})
+    const modifiedChats = chats.map((chat: { participants: any[]; toObject: () => any; }) => {
+        // Find the other participant
+        const otherParticipant = chat.participants.find((participant: { _id: { toString: () => any; }; }) => participant._id.toString() !== user.userId.toString());
+    
+        // Return a new object with the dynamic chatName
+        return {
+            ...chat.toObject(),
+            chatName: otherParticipant ? otherParticipant.username : 'Unknown'
+        };
+    });
+    
+    const template = pug.compileFile('views/chats.pug');
+    const markup = template({ chats: modifiedChats });
     res.send(markup);
 }
 
@@ -63,9 +77,10 @@ export const newChat = async (req: any, res: any) => {
         // Handle the case where the user is not found
         return res.status(404).send('User not found');
     }
+
+    
     const chat = new Chat({
-        participants: [user, receiver],
-        chatName: receiver.username
+        participants: [user._id, receiver._id],
     })
     await chat.save();
     const template = pug.compileFile('views/elements/newChat.pug')
