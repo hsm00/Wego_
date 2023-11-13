@@ -16,7 +16,7 @@ html(lang="en")
           div 
             ul(id="chatList" class="space-y-4", hx-target="#chatbox")
               each chat in chats
-                li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/" + chat._id, hx-trigger="click", onclick="selectChat(event)") Chat #{chat.chatName}
+                li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/" + chat._id, hx-trigger="click", onclick="selectChat(event)") #{chat.otherParticipantName}
               
           div
             form(hx-post="/chats/newChat" hx-target="#chatList" hx-swap="afterbegin")
@@ -28,6 +28,9 @@ html(lang="en")
 
 
   script.
+    var chats = !{JSON.stringify(chats)};
+    console.log(chats)
+
     function selectChat(event) {
       // Get all li elements
       const items = document.querySelectorAll('ul li');

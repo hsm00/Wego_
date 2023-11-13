@@ -27,8 +27,6 @@ wss.on('connection', function connection(ws: any ) {
         console.log("first")
     })
 });
-// const user = User.findOne ("tokens")
-
 
 
 export const chats = async (req: any, res: any) => {
@@ -36,21 +34,27 @@ export const chats = async (req: any, res: any) => {
         // Redirect to the login page if the token is not valid
         return res.redirect('/login');
     }
-    const user = req.user
-    const chats = await Chat.find({participants: user.userId})
-    const modifiedChats = chats.map((chat: { participants: any[]; toObject: () => any; }) => {
-        // Find the other participant
-        const otherParticipant = chat.participants.find((participant: { _id: { toString: () => any; }; }) => participant._id.toString() !== user.userId.toString());
-    
-        // Return a new object with the dynamic chatName
+
+    const user = req.user;
+    let chats = await Chat.find({ participants: user.userId });
+
+    // Fetch other participants' usernames
+    const chatsWithUsernames = await Promise.all(chats.map(async (chat: any) => {
+        // Find the ID of the other participant
+        const otherParticipantId = chat.participants.find((p: any) => p.toString() !== user.userId.toString());
+
+        // Fetch the other participant's username from the database
+        const otherParticipant = await User.findById(otherParticipantId);
+        const otherParticipantName = otherParticipant ? otherParticipant.username : null;
+
         return {
-            ...chat.toObject(),
-            chatName: otherParticipant ? otherParticipant.username : 'Unknown'
+            ...chat.toObject(), // Convert Mongoose document to a plain JavaScript object
+            otherParticipantName  // Add other participant's username
         };
-    });
-    
+    }));
+
     const template = pug.compileFile('views/chats.pug');
-    const markup = template({ chats: modifiedChats });
+    const markup = template({ chats: chatsWithUsernames, user });
     res.send(markup);
 }
 
@@ -80,7 +84,7 @@ export const newChat = async (req: any, res: any) => {
 
     
     const chat = new Chat({
-        participants: [user._id, receiver._id],
+        participants: [user, receiver]
     })
     await chat.save();
     const template = pug.compileFile('views/elements/newChat.pug')
