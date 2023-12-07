@@ -1,3 +1,4 @@
+
 div(class="w-full sm:hidden")
   button(id="sidebarToggle" class="p-4 focus:outline-none sm:hidden", onclick="toggleSidebar()") <
 
@@ -60,10 +61,12 @@ div(class="p-6 flex-grow overflow-y-auto")
         div(class="bg-gray-500 text-white max-w-md rounded-br-lg rounded-tl-lg rounded-tr-lg p-3")
           p Lorem ipsum receiver message...         
 
-div(class="p-4 bg-gray-300 border-t border-gray-400 flex-shrink-0 sm:position: relativ bottom-0")
-  div(class="flex items-center w-full")
-    input(name="message" type="text" class="w-full p-2 rounded-l-lg border-2 border-gray-400 focus:outline-none" placeholder="Type a message..." hx-ws="send")
-    
+
+form#messageForm(ws-send)
+  div(class="p-4.bg-gray-300.border-t.border-gray-400.flex-shrink-0.sm:position:relativ.bottom-0")
+    div.flex.items-center.w-full
+      input(class="w-full.p-2.rounded-l-lg.border-2.border-gray-400.focus:outline-none" name="message", type="text", placeholder="Type a message...", hx-post="URL_TO_HANDLE_MESSAGE", hx-target="#messageContainer")
+      button(class="bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded-r-lg") Send
 
 
     

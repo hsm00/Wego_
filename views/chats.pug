@@ -4,7 +4,9 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(href='/styles.css' rel='stylesheet')
-    script(src="https://unpkg.com/htmx.org")
+    <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/ws.js"></script>
+
 
 
   body(class="")
@@ -18,12 +20,12 @@ html(lang="en")
               each chat in chats
                 li(class="p-3 rounded-md cursor-pointer", hx-get="/chats/selected_chat/" + chat._id, hx-trigger="click", onclick="selectChat(event)") #{chat.otherParticipantName}
               
-          div
+          div()
             form(hx-post="/chats/newChat" hx-target="#chatList" hx-swap="afterbegin")
               input(class="px-4 py-2 rounded-md" name="receiver" placeholder="username")
               button(type="submit" class="newChat bg-blue-600 text-white px-4 py-2 rounded-md") New Chat
             
-        div(id="chatbox" class="flex-1 bg-gray-200 w-full flex flex-col" hx-ws="connect:ws://localhost:8081")
+        div(id="chatbox" class="flex-1 bg-gray-200 w-full flex flex-col" hx-ext="ws" ws-connect="/chats")
 
 
 

@@ -11,23 +11,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
 
-const wss = new WebSocket.Server({ port: 8081 })
-
-wss.on('connection', function connection(ws: any ) {
-    console.log('Client connected')
-    ws.send('hello world')
-
-    ws.on("close", () => {
-        console.log("Client disconnected");
-    });
-    ws.onerror = function () {
-        console.log("Some Error occurred");
-    };
-    ws.on("message", function sendMessage(data: any) {
-        console.log("first")
-    })
-});
-
+export const handleMessage = (message: any) => {
+    let parsedMessage;
+    
+    // Check if the message is a string and try parsing it as JSON
+    try {
+        parsedMessage = JSON.parse(message);
+        const messagse = parsedMessage.message.toString()
+        console.log(messagse)
+    } catch (error) {
+        // If parsing fails, assume message is already an object
+        parsedMessage = message;
+    }
+}
 
 export const chats = async (req: any, res: any) => {
     if (!req.tokenValid) {

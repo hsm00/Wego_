@@ -12,11 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
 
-
-
-
-
-
 export const loginPage = (req: any, res: any) => {
     const template = pug.compileFile('views/login.pug')
     const markup = template({  })
