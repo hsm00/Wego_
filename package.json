@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production node app.js",
     "build:ts": "tsc",
     "build:css": "postcss src/css/app.css -o assets/styles.css",
-    "watch:css": "chokidar 'views/*.pug' -c 'npm run build:css'",
+    "watch:css": "chokidar 'views/*.pug' -c 'npm run build:css -w'",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -20,6 +20,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "const": "^1.0.0",
+    "cookie": "^0.6.0",
     "cookie-parser": "^1.4.6",
     "debug": "^4.3.1",
     "dotenv": "^16.3.1",

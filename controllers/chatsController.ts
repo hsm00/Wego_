@@ -4,23 +4,38 @@ const bodyParser = require('body-parser');
 const WebSocket = require('ws')
 const express = require('express');
 const User = require('../models/User.js');
-const Chat = require('../models/Chat.js')
+const Chat = require('../models/Chat.js');
+const Message = require('../models/Message.js');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'pug');
 
-export const handleMessage = (message: any) => {
-    let parsedMessage;
-    
+export const handleMessage = (message: any, token:any) => {
+    let parsedMessage: any;
     // Check if the message is a string and try parsing it as JSON
     try {
         parsedMessage = JSON.parse(message);
-        const messagse = parsedMessage.message.toString()
-        console.log(messagse)
+        parsedMessage = parsedMessage.message.toString()
+        console.log(parsedMessage);
+
+        User.findOne({ token: token }, (err: any, user: any) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(user);
+                const newMessage = new Message({
+                    author: user._id,
+                    message: parsedMessage,                })
+                newMessage.save();
+            }
+        }
+        )
     } catch (error) {
         // If parsing fails, assume message is already an object
+        console.error('Error parsing message or token:', error);
+
         parsedMessage = message;
     }
 }

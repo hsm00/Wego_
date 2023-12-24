@@ -15,6 +15,8 @@ app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('assets'));
 app.use(compression());
+const cookie = require('cookie');
+
 
 mongoose.connect('mongodb+srv://root:root@wego.vxx1gme.mongodb.net/WeGo?retryWrites=true&w=majority', { useNewUrlParser: true });
 
@@ -40,13 +42,14 @@ WSSendMessage.on('connection', (ws) => {
 
 server.on('upgrade', function upgrade(request: any, socket: any, head: any) {
   const { pathname } = parse(request.url);
-
+  const cookies = cookie.parse(request.headers.cookie || '');
+  const authToken = cookies.authToken; 
   if (pathname === '/chats') {
     WSSendMessage.handleUpgrade(request, socket, head, function done(ws: any) {
       WSSendMessage.emit('connection', ws, request);
       ws.on('message', function incoming(message: any) {
         // Here, you can handle the received message
-        handleMessage(message);
+        handleMessage(message, authToken);
       });
     });
   } else {
